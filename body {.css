@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  height: 100vh;
+  animation: colorChange 5s infinite;
+}
+
+@keyframes colorChange {
+  0%   { background-color: #FF5733; }
+  25%  { background-color: #33FF57; }
+  50%  { background-color: #3357FF; }
+  75%  { background-color: #F1C40F; }
+  100% { background-color: #9B59B6; }
+}
