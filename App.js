@@ -1,12 +1,12 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
-import MarketScreen from './MarketScreen';
+import { SafeAreaView, StatusBar } from 'react-native';
+import GroceryList from './GroceryList';
 
 export default function App() {
   return (
-    <>
-      <StatusBar barStyle="light-content" />
-      <MarketScreen />
-    </>
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar barStyle="dark-content" />
+      <GroceryList />
+    </SafeAreaView>
   );
 }
