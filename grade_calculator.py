@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-BG    = "#000000"
+BG    = "#000000" 
 CARD  = "#111111"
 WHITE = "#ffffff"
 GRAY  = "#888888"
@@ -51,7 +51,8 @@ class App(tk.Tk):
         tk.Label(self, text="STUDENT GRADE MANAGEMENT SYSTEM",
                  font=("Courier", 9, "bold"),
                  bg=BG, fg=GRAY).pack()
-        tk.Frame(self, bg="#333", height=1).pack(fill="x", padx=24, pady=(14, 0))
+        tk.Frame(self, bg="white", height=1).pack(fill="x", padx=24, pady=(14, 0))
+    
 
         # Student Name
         frm = tk.Frame(self, bg=BG)
