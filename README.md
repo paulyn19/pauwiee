@@ -1,11 +1,11 @@
-# Smart Calculator
+# To-Do List App
 
-A responsive calculator with keyboard support and a dark interface.
+A task manager that stores tasks in browser Local Storage.
 
 ## Features
-- Addition, subtraction, multiplication, division, and percentage
-- Keyboard support
-- Clear and delete controls
+- Add, complete, and delete tasks
+- Clear completed tasks
+- Automatically saves tasks in Local Storage
 
 ## Requirements
 A modern web browser. No build tools required.
