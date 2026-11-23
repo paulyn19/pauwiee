@@ -1,20 +1,22 @@
-# Password Generator
+# Library Management System
 
-Generate random passwords with configurable length and character sets.
+A Python terminal application for managing books and recording borrow/return transactions using MySQL.
 
 ## Features
-- Adjustable length from 8 to 40 characters
-- Toggle lowercase, uppercase, numbers, and symbols
-- Uses the browser cryptographic random generator
-- Copy to clipboard
+- Add and list books
+- Borrow books while checking available copies
+- Return books and update stock
+- Uses parameterized SQL queries
 
 ## Requirements
-A modern web browser. No build tools required.
+Python 3.9+, MySQL Server, and MySQL Workbench (optional).
 
 ## Setup
-1. Open `index.html` in your browser.
-2. Edit the files in VS Code.
-3. Commit the folder to GitHub.
+1. Start MySQL Server.
+2. Run `schema.sql` in MySQL Workbench.
+3. Edit `CONFIG` in `main.py` with your MySQL username and password.
+4. Install dependencies: `pip install -r requirements.txt`.
+5. Run `python main.py`.
 
 ## Notes
 - This project is an educational mini-project.
