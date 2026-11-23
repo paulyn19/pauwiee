@@ -1,19 +1,19 @@
-# To-Do List App
+# Student Grade Calculator
 
-A task manager that stores tasks in browser Local Storage.
+A terminal-based program that calculates a student's average and displays a pass/fail result.
 
 ## Features
-- Add, complete, and delete tasks
-- Clear completed tasks
-- Automatically saves tasks in Local Storage
+- Accepts multiple subjects
+- Validates grades from 0 to 100
+- Calculates average and pass/fail status
 
 ## Requirements
-A modern web browser. No build tools required.
+Python 3.9 or newer.
 
 ## Setup
-1. Open `index.html` in your browser.
-2. Edit the files in VS Code.
-3. Commit the folder to GitHub.
+1. Open a terminal in this folder.
+2. Run `python main.py`.
+3. Enter a student name and subject grades. Type `DONE` when finished.
 
 ## Notes
 - This project is an educational mini-project.
