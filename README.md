@@ -1,22 +1,19 @@
-# Library Management System
+# Weather Forecast App
 
-A Python terminal application for managing books and recording borrow/return transactions using MySQL.
+Look up current weather using the Open-Meteo geocoding and forecast APIs. No API key is needed.
 
 ## Features
-- Add and list books
-- Borrow books while checking available copies
-- Return books and update stock
-- Uses parameterized SQL queries
+- City search using Open-Meteo geocoding
+- Current temperature, feels-like temperature, humidity, and wind
+- No API key required; internet connection required
 
 ## Requirements
-Python 3.9+, MySQL Server, and MySQL Workbench (optional).
+A modern web browser. No build tools required.
 
 ## Setup
-1. Start MySQL Server.
-2. Run `schema.sql` in MySQL Workbench.
-3. Edit `CONFIG` in `main.py` with your MySQL username and password.
-4. Install dependencies: `pip install -r requirements.txt`.
-5. Run `python main.py`.
+1. Open `index.html` in your browser.
+2. Edit the files in VS Code.
+3. Commit the folder to GitHub.
 
 ## Notes
 - This project is an educational mini-project.
