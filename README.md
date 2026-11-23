@@ -1,19 +1,18 @@
-# Student Grade Calculator
+# Digital Clock and Stopwatch
 
-A terminal-based program that calculates a student's average and displays a pass/fail result.
+A live digital clock and stopwatch in one page.
 
 ## Features
-- Accepts multiple subjects
-- Validates grades from 0 to 100
-- Calculates average and pass/fail status
+- Live local time and date
+- Stopwatch with start, pause, and reset
 
 ## Requirements
-Python 3.9 or newer.
+A modern web browser. No build tools required.
 
 ## Setup
-1. Open a terminal in this folder.
-2. Run `python main.py`.
-3. Enter a student name and subject grades. Type `DONE` when finished.
+1. Open `index.html` in your browser.
+2. Edit the files in VS Code.
+3. Commit the folder to GitHub.
 
 ## Notes
 - This project is an educational mini-project.
