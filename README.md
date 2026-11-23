@@ -1,10 +1,12 @@
-# Digital Clock and Stopwatch
+# Password Generator
 
-A live digital clock and stopwatch in one page.
+Generate random passwords with configurable length and character sets.
 
 ## Features
-- Live local time and date
-- Stopwatch with start, pause, and reset
+- Adjustable length from 8 to 40 characters
+- Toggle lowercase, uppercase, numbers, and symbols
+- Uses the browser cryptographic random generator
+- Copy to clipboard
 
 ## Requirements
 A modern web browser. No build tools required.
