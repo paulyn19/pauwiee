@@ -1,19 +1,7 @@
-function calculator(a, b, operation) {
-  switch (operation) {
-    case "add":
-      return a + b;
-    case "subtract":
-      return a - b;
-    case "multiply":
-      return a * b;
-    case "divide":
-      return b !== 0 ? a / b : "Error: division by zero";
-    default:
-      return "Invalid operation";
-  }
-}
-
-console.log("5 + 3 =", calculator(5, 3, "add"));
-console.log("5 - 3 =", calculator(5, 3, "subtract"));
-console.log("5 * 3 =", calculator(5, 3, "multiply"));
-console.log("5 / 3 =", calculator(5, 3, "divide"));
+const display=document.querySelector('#display'),keys=document.querySelector('#keys'),message=document.querySelector('#message');
+const buttons=['AC','DEL','%','÷','7','8','9','×','4','5','6','−','1','2','3','+','0','.','='];
+let expr='';
+buttons.forEach(k=>{const b=document.createElement('button');b.textContent=k;if(['AC','DEL'].includes(k))b.className='secondary';b.addEventListener('click',()=>press(k));keys.append(b)});
+function render(){display.value=expr||'0'}
+function press(k){if(k==='AC'){expr='';message.textContent='Cleared.'}else if(k==='DEL'){expr=expr.slice(0,-1)}else if(k==='='){try{const safe=expr.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-');if(!/^[0-9+*/%.() -]+$/.test(safe))throw Error();const result=Function('"use strict";return ('+safe+')')();if(!Number.isFinite(result))throw Error();expr=String(Number(result.toFixed(8)));message.textContent='Calculation complete.'}catch{message.textContent='Invalid expression.';expr=''}}else{expr+=k;message.textContent=''}render()}
+document.addEventListener('keydown',e=>{if(/[0-9.+%()*/-]/.test(e.key)&&e.key.length===1)press(e.key.replace('*','×').replace('/','÷').replace('-','−'));else if(e.key==='Enter')press('=');else if(e.key==='Backspace')press('DEL');else if(e.key==='Escape')press('AC')});
