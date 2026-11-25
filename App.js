@@ -1,21 +1,15 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AppProvider } from './AppContext';
-import HomeTab from './HomeTab';
-import SettingsTab from './SettingsTab';
-
-const Tab = createBottomTabNavigator();
-
-export default function App() {
-  return (
-    <AppProvider>
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Home" component={HomeTab} />
-          <Tab.Screen name="Settings" component={SettingsTab} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </AppProvider>
-  );
+import React, {useState} from 'react';
+import {SafeAreaView,View,Text,FlatList,TouchableOpacity,StyleSheet,Alert} from 'react-native';
+const MENU=[{id:'1',name:'Chicken Rice Bowl',price:120,emoji:'🍗'},{id:'2',name:'Pancit Special',price:95,emoji:'🍜'},{id:'3',name:'Veggie Sandwich',price:75,emoji:'🥪'},{id:'4',name:'Fruit Shake',price:60,emoji:'🥤'}];
+export default function App(){
+ const [cart,setCart]=useState({});
+ const add=id=>setCart(old=>({...old,[id]:(old[id]||0)+1}));
+ const remove=id=>setCart(old=>{const n={...old};if((n[id]||0)<=1)delete n[id];else n[id]--;return n});
+ const count=Object.values(cart).reduce((a,b)=>a+b,0);
+ const total=MENU.reduce((sum,item)=>sum+item.price*(cart[item.id]||0),0);
+ return <SafeAreaView style={s.screen}><Text style={s.kicker}>MINI PROJECT 12</Text><Text style={s.title}>Food Corner</Text><Text style={s.sub}>Choose your meal and add it to your cart.</Text>
+ <FlatList data={MENU} keyExtractor={x=>x.id} contentContainerStyle={{paddingBottom:20}} renderItem={({item})=><View style={s.item}><Text style={s.emoji}>{item.emoji}</Text><View style={{flex:1}}><Text style={s.name}>{item.name}</Text><Text style={s.price}>₱{item.price.toFixed(2)}</Text></View><TouchableOpacity style={s.btn} onPress={()=>add(item.id)}><Text style={s.btnText}>Add</Text></TouchableOpacity><Text style={s.qty}>{cart[item.id]||0}</Text><TouchableOpacity style={s.minus} onPress={()=>remove(item.id)}><Text style={s.btnText}>−</Text></TouchableOpacity></View>}/>
+ <View style={s.cart}><Text style={s.cartTitle}>Your cart · {count} item(s)</Text>{MENU.filter(x=>cart[x.id]).map(x=><Text key={x.id} style={s.sub}>{x.name} × {cart[x.id]} = ₱{(x.price*cart[x.id]).toFixed(2)}</Text>)}<Text style={s.total}>Total: ₱{total.toFixed(2)}</Text><TouchableOpacity style={s.checkout} onPress={()=>{if(!count)Alert.alert('Cart is empty','Add an item first.');else{Alert.alert('Order summary',`Your total is ₱${total.toFixed(2)}. This demo does not submit a real order.`);setCart({})}}}><Text style={s.checkoutText}>Place demo order</Text></TouchableOpacity></View>
+ </SafeAreaView>;
 }
+const s=StyleSheet.create({screen:{flex:1,backgroundColor:'#0b1020',padding:20,paddingTop:45},kicker:{color:'#48d597',fontWeight:'700'},title:{color:'#edf2ff',fontSize:32,fontWeight:'800',marginTop:8},sub:{color:'#9aa8c7',marginTop:5},item:{backgroundColor:'#121a2d',borderColor:'#283653',borderWidth:1,borderRadius:15,padding:14,marginTop:12,flexDirection:'row',alignItems:'center',gap:10},emoji:{fontSize:30},name:{color:'#edf2ff',fontWeight:'700'},price:{color:'#9aa8c7',marginTop:4},btn:{backgroundColor:'#7c9cff',padding:10,borderRadius:9},btnText:{color:'#081126',fontWeight:'800'},qty:{color:'#edf2ff',minWidth:18,textAlign:'center'},minus:{backgroundColor:'#344363',padding:9,borderRadius:9},cart:{backgroundColor:'#19243b',padding:16,borderRadius:16,marginTop:12},cartTitle:{color:'#edf2ff',fontWeight:'800',fontSize:18},total:{color:'#edf2ff',fontWeight:'800',fontSize:20,marginTop:10},checkout:{backgroundColor:'#48d597',padding:13,borderRadius:10,marginTop:12,alignItems:'center'},checkoutText:{color:'#071a16',fontWeight:'800'}});
