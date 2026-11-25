@@ -1,34 +1,34 @@
 import mysql.connector
 from mysql.connector import Error
-CONFIG={"host":"localhost","user":"root","password":"","database":"inventory_db"}
+from datetime import date
+CONFIG={"host":"localhost","user":"root","password":"","database":"attendance_db"}
 
 def main():
     try: db=mysql.connector.connect(**CONFIG)
-    except Error as e: print("Could not connect:",e); return
+    except Error as e: print("Database connection failed:",e); return
     try:
         while True:
-            print("\nINVENTORY SYSTEM\n1 Add product\n2 View products\n3 Update stock\n4 Delete product\n5 Exit")
+            print("\nATTENDANCE MANAGER\n1 Register student\n2 List students\n3 Record attendance today\n4 View today's attendance\n5 Exit")
             choice=input("Choose: ")
             with db.cursor() as c:
                 if choice=="1":
-                    name=input("Name: ").strip(); category=input("Category: ").strip()
-                    try: price=float(input("Price: ")); stock=int(input("Initial stock: "))
-                    except ValueError: print("Invalid number."); continue
-                    if not name or price<0 or stock<0: print("Check product details."); continue
-                    c.execute("INSERT INTO products(name,category,price,stock) VALUES(%s,%s,%s,%s)",(name,category,price,stock)); db.commit(); print("Product saved.")
+                    no=input("Student number: ").strip(); name=input("Full name: ").strip()
+                    if not no or not name: print("Both fields are required."); continue
+                    try: c.execute("INSERT INTO students(student_no,full_name) VALUES(%s,%s)",(no,name)); db.commit(); print("Student registered.")
+                    except Error as e: db.rollback(); print("Could not register:",e)
                 elif choice=="2":
-                    c.execute("SELECT id,name,category,price,stock FROM products ORDER BY name")
-                    for r in c.fetchall(): print(f"#{r[0]} {r[1]} | {r[2]} | ₱{r[3]} | stock: {r[4]}")
+                    c.execute("SELECT id,student_no,full_name FROM students ORDER BY full_name")
+                    for r in c.fetchall(): print(f"{r[0]} | {r[1]} | {r[2]}")
                 elif choice=="3":
-                    try: pid=int(input("Product ID: ")); delta=int(input("Stock change (+/-): "))
-                    except ValueError: print("Enter valid numbers."); continue
-                    c.execute("UPDATE products SET stock=stock+%s WHERE id=%s AND stock+%s>=0",(delta,pid,delta))
-                    if c.rowcount: db.commit(); print("Stock updated.")
-                    else: db.rollback(); print("Product not found or stock cannot become negative.")
-                elif choice=="4":
-                    try: pid=int(input("Product ID: "))
+                    try: sid=int(input("Student ID: "))
                     except ValueError: print("Invalid ID."); continue
-                    c.execute("DELETE FROM products WHERE id=%s",(pid,)); db.commit(); print("Deleted." if c.rowcount else "Not found.")
+                    status=input("Status (Present/Absent/Late): ").strip().title()
+                    if status not in ("Present","Absent","Late"): print("Invalid status."); continue
+                    try: c.execute("INSERT INTO attendance(student_id,attendance_date,status) VALUES(%s,%s,%s)",(sid,date.today(),status)); db.commit(); print("Attendance saved.")
+                    except Error as e: db.rollback(); print("Could not save (student may not exist or already have today's record):",e)
+                elif choice=="4":
+                    c.execute("SELECT s.student_no,s.full_name,a.status FROM attendance a JOIN students s ON a.student_id=s.id WHERE a.attendance_date=%s ORDER BY s.full_name",(date.today(),))
+                    for r in c.fetchall(): print(f"{r[0]} | {r[1]} | {r[2]}")
                 elif choice=="5": break
                 else: print("Choose 1-5.")
     finally: db.close()
