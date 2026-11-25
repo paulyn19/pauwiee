@@ -1,11 +1,12 @@
-# Weather Forecast App
+# Online Quiz Application
 
-Look up current weather using the Open-Meteo geocoding and forecast APIs. No API key is needed.
+A short interactive quiz with scoring and a countdown timer.
 
 ## Features
-- City search using Open-Meteo geocoding
-- Current temperature, feels-like temperature, humidity, and wind
-- No API key required; internet connection required
+- Five sample computer science questions
+- Multiple-choice answers
+- Automatic scoring and 60-second timer
+- Feedback after each answer
 
 ## Requirements
 A modern web browser. No build tools required.
