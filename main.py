@@ -1,59 +1,35 @@
 import mysql.connector
 from mysql.connector import Error
-
-CONFIG = {"host":"localhost", "user":"root", "password":"", "database":"library_db"}
-
-def connect():
-    return mysql.connector.connect(**CONFIG)
-
-def add_book(db):
-    title=input("Book title: ").strip(); author=input("Author: ").strip()
-    if not title or not author: print("Both fields are required."); return
-    copies=int(input("Number of copies: "))
-    with db.cursor() as c:
-        c.execute("INSERT INTO books(title,author,copies) VALUES(%s,%s,%s)",(title,author,copies))
-    db.commit(); print("Book added.")
-
-def list_books(db):
-    with db.cursor() as c:
-        c.execute("SELECT id,title,author,copies FROM books ORDER BY title")
-        rows=c.fetchall()
-    print("\nID | TITLE | AUTHOR | AVAILABLE")
-    for r in rows: print(f"{r[0]} | {r[1]} | {r[2]} | {r[3]}")
-
-def borrow(db):
-    list_books(db)
-    try: book_id=int(input("Book ID: ")); borrower=input("Borrower name: ").strip()
-    except ValueError: print("Invalid ID."); return
-    with db.cursor() as c:
-        c.execute("SELECT copies FROM books WHERE id=%s",(book_id,)); row=c.fetchone()
-        if not row or row[0]<1: print("Book unavailable."); return
-        c.execute("UPDATE books SET copies=copies-1 WHERE id=%s",(book_id,))
-        c.execute("INSERT INTO loans(book_id,borrower) VALUES(%s,%s)",(book_id,borrower))
-    db.commit(); print("Loan recorded.")
-
-def return_book(db):
-    try: loan_id=int(input("Loan ID to return: "))
-    except ValueError: print("Invalid ID."); return
-    with db.cursor() as c:
-        c.execute("SELECT book_id FROM loans WHERE id=%s AND returned_at IS NULL",(loan_id,)); row=c.fetchone()
-        if not row: print("Active loan not found."); return
-        c.execute("UPDATE loans SET returned_at=NOW() WHERE id=%s",(loan_id,))
-        c.execute("UPDATE books SET copies=copies+1 WHERE id=%s",(row[0],))
-    db.commit(); print("Book returned.")
+CONFIG={"host":"localhost","user":"root","password":"","database":"inventory_db"}
 
 def main():
-    try: db=connect()
-    except Error as e: print("Database connection failed:",e); return
+    try: db=mysql.connector.connect(**CONFIG)
+    except Error as e: print("Could not connect:",e); return
     try:
         while True:
-            print("\nLIBRARY MANAGER\n1 Add book\n2 List books\n3 Borrow book\n4 Return book\n5 Exit")
+            print("\nINVENTORY SYSTEM\n1 Add product\n2 View products\n3 Update stock\n4 Delete product\n5 Exit")
             choice=input("Choose: ")
-            if choice=="1": add_book(db)
-            elif choice=="2": list_books(db)
-            elif choice=="3": borrow(db)
-            elif choice=="4": return_book(db)
-            elif choice=="5": break
-            else: print("Choose 1-5.")
+            with db.cursor() as c:
+                if choice=="1":
+                    name=input("Name: ").strip(); category=input("Category: ").strip()
+                    try: price=float(input("Price: ")); stock=int(input("Initial stock: "))
+                    except ValueError: print("Invalid number."); continue
+                    if not name or price<0 or stock<0: print("Check product details."); continue
+                    c.execute("INSERT INTO products(name,category,price,stock) VALUES(%s,%s,%s,%s)",(name,category,price,stock)); db.commit(); print("Product saved.")
+                elif choice=="2":
+                    c.execute("SELECT id,name,category,price,stock FROM products ORDER BY name")
+                    for r in c.fetchall(): print(f"#{r[0]} {r[1]} | {r[2]} | ₱{r[3]} | stock: {r[4]}")
+                elif choice=="3":
+                    try: pid=int(input("Product ID: ")); delta=int(input("Stock change (+/-): "))
+                    except ValueError: print("Enter valid numbers."); continue
+                    c.execute("UPDATE products SET stock=stock+%s WHERE id=%s AND stock+%s>=0",(delta,pid,delta))
+                    if c.rowcount: db.commit(); print("Stock updated.")
+                    else: db.rollback(); print("Product not found or stock cannot become negative.")
+                elif choice=="4":
+                    try: pid=int(input("Product ID: "))
+                    except ValueError: print("Invalid ID."); continue
+                    c.execute("DELETE FROM products WHERE id=%s",(pid,)); db.commit(); print("Deleted." if c.rowcount else "Not found.")
+                elif choice=="5": break
+                else: print("Choose 1-5.")
     finally: db.close()
 if __name__=="__main__": main()

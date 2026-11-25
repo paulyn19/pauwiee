@@ -1,20 +1,20 @@
-# Online Quiz Application
+# Inventory Management System
 
-A short interactive quiz with scoring and a countdown timer.
+A Python and MySQL terminal app for tracking product details, prices, and stock.
 
 ## Features
-- Five sample computer science questions
-- Multiple-choice answers
-- Automatic scoring and 60-second timer
-- Feedback after each answer
+- Create, view, update, and delete products
+- Adjust stock without allowing negative quantities
+- Parameterized SQL queries
 
 ## Requirements
-A modern web browser. No build tools required.
+Python 3.9+ and MySQL Server.
 
 ## Setup
-1. Open `index.html` in your browser.
-2. Edit the files in VS Code.
-3. Commit the folder to GitHub.
+1. Run `schema.sql` in MySQL.
+2. Set your MySQL credentials in `main.py`.
+3. Run `pip install -r requirements.txt`.
+4. Start with `python main.py`.
 
 ## Notes
 - This project is an educational mini-project.
